@@ -1,9 +1,10 @@
-import { ClerkProvider } from "@clerk/nextjs";
 import "~/styles/globals.css";
 
 import { Inter } from "next/font/google";
 import { cookies } from "next/headers";
 
+import { getServerSession } from "next-auth";
+import SessionProvider from "./_components/SessionProvider";
 import { TRPCReactProvider } from "~/trpc/react";
 
 const inter = Inter({
@@ -17,20 +18,22 @@ export const metadata = {
     icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
-export default function RootLayout({
+export default async function RootLayout({
     children,
 }: {
     children: React.ReactNode;
 }) {
+    const session = await getServerSession();
+
     return (
-        <ClerkProvider>
-            <html lang="en">
-                <body className={`font-sans ${inter.variable}`}>
-                    <TRPCReactProvider cookies={cookies().toString()}>
+        <html lang="en">
+            <body className={`font-sans ${inter.variable}`}>
+                <TRPCReactProvider cookies={cookies().toString()}>
+                    <SessionProvider session={session}>
                         {children}
-                    </TRPCReactProvider>
-                </body>
-            </html>
-        </ClerkProvider>
+                    </SessionProvider>
+                </TRPCReactProvider>
+            </body>
+        </html>
     );
 }

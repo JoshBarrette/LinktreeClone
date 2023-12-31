@@ -1,9 +1,5 @@
-import {
-    SignedInAuthObject,
-    SignedOutAuthObject,
-    getAuth,
-} from "@clerk/nextjs/server";
 import { TRPCError, initTRPC } from "@trpc/server";
+import { Session } from "next-auth";
 import { NextRequest } from "next/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
@@ -12,19 +8,22 @@ import { db } from "~/server/db";
 
 export const createInnerTRPCContext = (opts: {
     headers: Headers;
-    auth: SignedInAuthObject | SignedOutAuthObject;
+    session: Session | null;
 }) => {
     return {
         headers: opts.headers,
-        auth: opts.auth,
+        session: opts.session,
         db,
     };
 };
 
-export const createTRPCContext = (opts: { req: NextRequest }) => {
+export const createTRPCContext = (opts: {
+    req: NextRequest;
+    session: Session | null;
+}) => {
     return createInnerTRPCContext({
         headers: opts.req.headers,
-        auth: getAuth(opts.req),
+        session: opts.session,
     });
 };
 
@@ -45,12 +44,12 @@ const t = initTRPC.context<typeof createTRPCContext>().create({
 });
 
 const isAuthorized = t.middleware(({ next, ctx }) => {
-    if (!ctx.auth.userId) {
+    if (!ctx.session || !ctx.session.user) {
         throw new TRPCError({ code: "UNAUTHORIZED" });
     }
     return next({
         ctx: {
-            auth: ctx.auth,
+            session: ctx.session,
         },
     });
 });

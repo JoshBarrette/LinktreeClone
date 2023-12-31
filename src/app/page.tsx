@@ -1,17 +1,15 @@
-import { db } from "~/server/db";
+import { api } from "~/trpc/server";
 import NavBar from "./_components/NavBar";
 
 export default async function Home() {
-    const posts = await db.post.findMany();
+    const posts = await api.post.hello.query();
 
     return (
         <main>
             <div>
                 <NavBar />
                 <p>Linktree Clone</p>
-                {posts.map((post, k) => (
-                    <p key={k}>{post.name}</p>
-                ))}
+                {posts.greeting}
             </div>
         </main>
     );
