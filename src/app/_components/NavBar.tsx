@@ -5,6 +5,7 @@ import Link from "next/link";
 
 export default function NavBar() {
     const session = useSession();
+    console.log("client session", session.data?.user);
 
     return (
         <div className="relative mx-24 mt-12 flex h-24 rounded-full bg-black text-2xl text-white">
