@@ -1,4 +1,4 @@
-import { AuthOptions, DefaultUser, User } from "next-auth";
+import { AuthOptions } from "next-auth";
 import NextAuth from "next-auth/next";
 import GitHubProvider from "next-auth/providers/github";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
