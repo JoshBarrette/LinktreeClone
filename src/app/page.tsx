@@ -1,5 +1,4 @@
 import { api } from "~/trpc/server";
-import NavBar from "./_components/NavBar";
 import { getServerSession } from "next-auth";
 
 export default async function Home() {
@@ -9,7 +8,6 @@ export default async function Home() {
     return (
         <main>
             <div>
-                <NavBar />
                 <p>Linktree Clone</p>
                 {posts.greeting}
             </div>

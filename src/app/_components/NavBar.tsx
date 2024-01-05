@@ -30,7 +30,7 @@ function UserDropDown(props: { user: any }) {
         <div className="group mr-4 text-base">
             <img width={65} src={props.user?.image} className="rounded-full" />
             <div className="absolute right-0 mr-4 scale-0 group-hover:scale-100">
-                <div className="mt-2 w-40 space-y-1 rounded-lg bg-neutral-700 p-2">
+                <div className="mt-2 w-40 rounded-lg bg-neutral-700 p-2">
                     <DropDownItemLink text={"Your Tree"} href="/MyTree" />
                     <DropDownItem text={"Sign Out"} onClick={() => signOut()} />
                 </div>

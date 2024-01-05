@@ -6,6 +6,7 @@ import { cookies } from "next/headers";
 import { getServerSession } from "next-auth";
 import SessionProvider from "./_components/SessionProvider";
 import { TRPCReactProvider } from "~/trpc/react";
+import NavBar from "./_components/NavBar";
 
 const inter = Inter({
     subsets: ["latin"],
@@ -30,6 +31,7 @@ export default async function RootLayout({
             <body className={`font-sans ${inter.variable}`}>
                 <TRPCReactProvider cookies={cookies().toString()}>
                     <SessionProvider session={session}>
+                        <NavBar />
                         {children}
                     </SessionProvider>
                 </TRPCReactProvider>
